@@ -40,6 +40,18 @@
 
 **UI follow-up:** the helper paragraph below the loan form visibly overlaps its grid controls. A cosmetic fix should remove or reposition the obsolete instruction.
 
+## Verified manual negative scenarios (learner screenshots)
+
+**October 14, 2026, approximately 10:15 America/Bogota.** Three additional screenshots captured from the locally running React/Laravel/PostgreSQL stack:
+
+| Acceptance criterion | Input and observed result | Status |
+| --- | --- | --- |
+| CA-03.2, duplicate ISBN | Attempting to create another active book with ISBN `9780307474728` displayed `ISBN already exists.`; catalogue still showed exactly one matching book | **PASS (browser)** |
+| CA-05.1, duplicate member document | Attempting to register another member with `QA20261014` displayed `Document number already exists.`; member list still showed one matching record | **PASS (browser)** |
+| CA-03.5, withdraw with open loan | A book on loan (stock `2/3`) remained in active catalogue after `Withdraw` and displayed `Book has open loans.` | **PASS (browser)** |
+
+These results verify individual negative acceptance paths, not the complete response schema or all authorization, input validation and concurrency scenarios.
+
 ## Published but NOT yet acceptance-verified
 
 - Full architecture/ports/adapters independence (T-07…T-11, T-19): the current Laravel controller retains orchestration and persistence responsibilities. Formal hexagonal composition and application fake tests remain missing.
