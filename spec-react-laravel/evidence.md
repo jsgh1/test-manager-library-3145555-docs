@@ -77,11 +77,29 @@ These results verify individual negative acceptance paths, not the complete resp
 - **PHP and live PostgreSQL CI jobs both passed**: [API workflow 38590795028](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38590795028).
 - Reading/listing, membership and cover orchestration are still implemented in the controller and remain pending for **full** hexagonal architecture acceptance.
 
+## Manual librarian-role acceptance checks (learner screenshots)
+
+**October 14, 2026, approximately 10:38 America/Bogota.** Six screenshots provided by the learner from the running Docker/React/Laravel/PostgreSQL application establish the following browser observations:
+
+| Test | Observed result | Outcome |
+| --- | --- | --- |
+| Admin creates a librarian | Administrator-only *Librarians* screen displays `Librarian created.` | **PASS (browser)** |
+| Login under librarian role | `Librarian` account label visible after a new login | **PASS (browser)** |
+| UI role separation | Sidebar includes Overview, Catalogue, Members, Loans & returns, Overdue items; Reports and Librarians admin links are absent; Catalogue has no Edit/Withdraw actions | **PASS (browser, UI only)** |
+| Librarian catalogue search | Searching for `Cien años` returns the existing title; stock observed at `2/3` | **PASS (browser)** |
+| Librarian registers a member | Green `Saved successfully.` banner and new `Usuario Stage` member, document `QA20261015`, present in listing | **PASS (browser)** |
+| Librarian issues loan | Green `Loan registered.` banner and newly displayed `Open` checkout | **PASS (browser)** |
+| Inventory decreases correctly | Catalogue inventory changes from `2/3` to `1/3` following checkout | **PASS (browser)** |
+
+**Authorization distinction:** the screenshots demonstrate **UI visibility** restrictions, not direct backend rejection; the latter is separately demonstrated by the 403 assertions in [API CI run 38589211868](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38589211868).
+
+**Remaining:** full manual testing of librarian returns, overdue-report handling, responsive behavior and role-specific HTTP error cases, and demonstration data generator execution.
+
 ## Published but NOT yet acceptance-verified
 
 - Complete hexagonal separation (T-08/T-19): lending, returns, authentication, historical reporting and book create/update/withdraw now use application services and tested ports/adapters. Book searching/detail, cover operations, member management and loan/overdue listings still retain infrastructure orchestration in the HTTP controller.
 - File upload content/size/binary lifecycle, soft deletion with active loan conflict, every error code and complete authorization matrix.
-- Full UI acceptance beyond the successful book/member/loan/return happy path: negative cases, authorization by role, pagination, cover upload, report, overdue screen and responsive checks (T-22).
+- Full UI acceptance beyond the confirmed admin book/member/checkout/return and librarian creation/login/search/member/checkout paths: pagination, cover upload, report, overdue screen, role-specific HTTP cases and responsive checks (T-22).
 - Public page responsive/browser checks (T-23); the source is intentionally self-contained.
 - Tool execution against a live populated API (T-21). The documented three-overdue-item requirement remains impossible with the specified clock API.
 - Performance with 5,000 books (RNF-1), all edge and negative cases, and nonfunctional security review.
