@@ -133,12 +133,22 @@ The totals reconcile exactly with the earlier screenshots and API-only seed outp
 - **Previously PASS (CI):** The page includes responsive styles and does not reference the API; see [page CI run 38589644644](https://github.com/jsgh1/test-manager-library-3145555-page/actions/runs/38589644644).
 - **NOT YET CONFIRMED (manual):** Responsive appearance at mobile width, keyboard navigation and offline font fallback. Opening the page alone does not verify those.
  
+## Final local desktop/mobile and Docker health recheck
+
+**October 14, 2026, approximately 10:54 America/Bogota.** Learner supplied a Chrome DevTools screenshot using the **Samsung Galaxy A55 viewport (360 x 800)** and the local PowerShell result from the same running stack.
+
+- **PASS (mobile first viewport):** Public static page loads on a 360px viewport with legible brand, headline and description, and the main action fully inside the visible width. The hero illustration continues below the fold as expected for a scrollable page. No obvious horizontal overflow is visible in the supplied screenshot.
+- **LIMITED scope:** Screenshot shows the hero region only. Lower feature cards, closing section, and complete mobile scrolling are not independently evidenced.
+- **PASS (Docker health):** `docker compose ps` showed `manager-library-api-1` **Up**, `manager-library-app-1` **Up**, and `manager-library-db-1` **Up (healthy)** using `postgres:16-alpine`.
+- **PASS (HTTP health):** `curl.exe http://localhost:8000/health` returned `{"status":"ok"}`.
+- **Submission readiness:** All six implementation/documentation forks have committed `main` branches; this record does not assert complete acceptance of all 23 tasks.
+
 ## Published but NOT yet acceptance-verified
 
 - Complete hexagonal separation (T-08/T-19): lending, returns, authentication, historical reporting and book create/update/withdraw now use application services and tested ports/adapters. Book searching/detail, cover operations, member management and loan/overdue listings still retain infrastructure orchestration in the HTTP controller.
 - File upload content/size/binary lifecycle, soft deletion with active loan conflict, every error code and complete authorization matrix.
 - Full UI acceptance beyond the confirmed admin book/member/checkout/return and librarian creation/login/search/member/checkout paths: pagination, cover upload, report, overdue screen, role-specific HTTP cases and responsive checks (T-22).
-- T-23 manual page opening passed, but mobile layout, keyboard accessibility and offline presentation remain unverified.
+- T-23 static page opening and mobile hero at 360px were visually verified; lower mobile sections, keyboard accessibility and offline presentation remain unverified.
 - T-21 remaining gap: three overdue demonstration items cannot be generated in the examination window under the specified server-clock HTTP contract; 40 books, 10 members and 15 loans were successfully seeded via the API.
 - Performance with 5,000 books (RNF-1), all edge and negative cases, and nonfunctional security review.
 
