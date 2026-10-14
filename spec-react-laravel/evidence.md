@@ -93,7 +93,22 @@ These results verify individual negative acceptance paths, not the complete resp
 
 **Authorization distinction:** the screenshots demonstrate **UI visibility** restrictions, not direct backend rejection; the latter is separately demonstrated by the 403 assertions in [API CI run 38589211868](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38589211868).
 
-**Remaining:** full manual testing of librarian returns, overdue-report handling, responsive behavior and role-specific HTTP error cases, and demonstration data generator execution.
+**Remaining:** full manual testing of librarian returns, overdue-report handling, responsive behavior and role-specific HTTP error cases. The demo generator has now run successfully, with the three-overdue requirement still unresolved.
+
+## API-only demo seeder: local execution evidence (T-21)
+
+**October 14, 2026, learner-provided Windows PowerShell output.** The learner updated `test-manager-library-3145555-tool/main` and ran `Iniciar-Semillero.ps1` against the already-running local Docker Compose deployment. The tool copied `seed.mjs` into the Node app container and called the Laravel backend over HTTP. Docker Compose showed `api` and `app` running, and PostgreSQL 16 healthy.
+
+| Test | Actual console output | Verification |
+| --- | --- | --- |
+| Create catalogue demonstration set | `Created 40 books` | **PASS (API execution)** |
+| Create members | `Created 10 members` | **PASS (API execution)** |
+| Create loans | `Created 15 loans` | **PASS (API execution)** |
+| Read historical most-borrowed report | `Report rows: 16` | **PASS (API query)** |
+| List overdue items immediately after issuing loans | `Overdue lines: 0` | **INCOMPLETE relative to T-21 three-overdue fixture requirement** |
+| Final script completion | `API-only seed completed: 40 books, 10 members, 15 loans.` and `[OK] Demo generation finished.` | **PASS (process exit)** |
+
+**Limitations:** T-21 is **PARTIAL**, not fully accepted: the reference API issues current-time loans with a +14-day due date and offers no legitimate past-date fixture endpoint. Do not silently backdate loans or write direct SQL from the demo tool. A responsible documented clarification/waiver is needed to satisfy exactly three overdue demo fixtures. This is evidence of the learner's console output, not an independent database-count inspection.
 
 ## Published but NOT yet acceptance-verified
 
@@ -101,7 +116,7 @@ These results verify individual negative acceptance paths, not the complete resp
 - File upload content/size/binary lifecycle, soft deletion with active loan conflict, every error code and complete authorization matrix.
 - Full UI acceptance beyond the confirmed admin book/member/checkout/return and librarian creation/login/search/member/checkout paths: pagination, cover upload, report, overdue screen, role-specific HTTP cases and responsive checks (T-22).
 - Public page responsive/browser checks (T-23); the source is intentionally self-contained.
-- Tool execution against a live populated API (T-21). The documented three-overdue-item requirement remains impossible with the specified clock API.
+- T-21 remaining gap: three overdue demonstration items cannot be generated in the examination window under the specified server-clock HTTP contract; 40 books, 10 members and 15 loans were successfully seeded via the API.
 - Performance with 5,000 books (RNF-1), all edge and negative cases, and nonfunctional security review.
 
 ## Important cautions
