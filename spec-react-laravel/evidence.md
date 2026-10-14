@@ -22,7 +22,7 @@
 - Health check `GET http://localhost:8000/health` returned `{"status":"ok"}`.
 - The learner independently opened `http://localhost:5173/`, logged in successfully, and reached the dashboard.
 - **Conclusion:** T-20's one-command Docker bootstrap and the entry-level T-17 admin login were verified in the learner's local environment. This does **not** yet certify all end-to-end user-story acceptance criteria.
-- **Non-blocking warning:** Composer reported a PSR-4 autoload mismatch for `tests/DomainTest.php`; review separately.
+- **Remediated:** The initial Composer PSR-4 test-autoload warning was corrected in API commit [`5e87949`](https://github.com/jsgh1/test-manager-library-3145555-api/commit/5e87949d633bb3ca00aa63dab0bc900fb520765a); both PHP unit and PostgreSQL integration CI jobs passed in [run 38585063252](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38585063252).
 
 ## Published but NOT yet acceptance-verified
 
