@@ -60,9 +60,19 @@ These results verify individual negative acceptance paths, not the complete resp
 - **Evidence:** [API CI run 38588634252](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38588634252) completed successfully in both PHP and PostgreSQL integration jobs, including checkout/return, historical snapshot and simultaneous last-copy loan protection.
 - **Honest limitation:** authentication, catalogue, membership, overdue listing and report still have application logic within the Laravel HTTP controller. Therefore the system is **not yet a fully hexagonal implementation** and T-07/T-08/T-11/T-19 cannot be marked completely satisfied solely by this partial remediation.
 
+## Verified security, application and report port adaptations
+
+- [API authentication refactor f72fd5e](https://github.com/jsgh1/test-manager-library-3145555-api/commit/f72fd5e14fee63708509011bd2040252d8adbd1f) introduced application-owned user, password and token ports, adapters, `LoginService` and `CreateLibrarianService`; the HTTP controller now delegates these use cases.
+- [API authentication fake-port tests 137501d](https://github.com/jsgh1/test-manager-library-3145555-api/commit/137501d612acfe95a1b0eb3b615a618ca5622caf) verify username normalization, secrecy of hashes in responses, denial of admin self-provisioning, valid login and undifferentiated invalid credential errors.
+- [API integration run 38589211868](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38589211868) verified API librarian creation, librarian read access, 403 on admin-only routes, duplicate ISBN and member 409, and open-loan withdrawal 409, plus prior concurrency checks.
+- [API report port refactor c89cda1](https://github.com/jsgh1/test-manager-library-3145555-api/commit/c89cda1225055cac0987e0aa7186e6dd5453db14) and [report fake tests 6727c23](https://github.com/jsgh1/test-manager-library-3145555-api/commit/6727c23ab7a97d6a181426084bb8185505931218) preserve historical snapshots and inclusive UTC date ranges.
+- **All current API tests** (PHP syntax, unit/fake-port architecture checks and PostgreSQL integration) passed in [run 38590276701](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38590276701).
+- The independent public `page` completed [static checks](https://github.com/jsgh1/test-manager-library-3145555-page/actions/runs/38589644644); the `tool` Node + PowerShell entrypoints completed [syntax checks](https://github.com/jsgh1/test-manager-library-3145555-tool/actions/runs/38589641697).
+- [Tool's PowerShell Docker launcher](https://github.com/jsgh1/test-manager-library-3145555-tool/blob/main/Iniciar-Semillero.ps1) is published, **but an actual end-to-end demonstration seed run has not yet been evidenced**.
+
 ## Published but NOT yet acceptance-verified
 
-- Complete hexagonal separation (T-07/T-08/T-11/T-19): lending and returning now have tested ports/adapters, but authentication, books, membership, listing and reporting still need application service extraction and fuller architecture checks.
+- Complete hexagonal separation (T-08/T-19): lending, returns, authentication and historical reporting now use application services and tested ports/adapters, but book and member management and listing still retain persistence orchestration inside the HTTP controller.
 - File upload content/size/binary lifecycle, soft deletion with active loan conflict, every error code and complete authorization matrix.
 - Full UI acceptance beyond the successful book/member/loan/return happy path: negative cases, authorization by role, pagination, cover upload, report, overdue screen and responsive checks (T-22).
 - Public page responsive/browser checks (T-23); the source is intentionally self-contained.
