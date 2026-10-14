@@ -70,9 +70,16 @@ These results verify individual negative acceptance paths, not the complete resp
 - The independent public `page` completed [static checks](https://github.com/jsgh1/test-manager-library-3145555-page/actions/runs/38589644644); the `tool` Node + PowerShell entrypoints completed [syntax checks](https://github.com/jsgh1/test-manager-library-3145555-tool/actions/runs/38589641697).
 - [Tool's PowerShell Docker launcher](https://github.com/jsgh1/test-manager-library-3145555-tool/blob/main/Iniciar-Semillero.ps1) is published, **but an actual end-to-end demonstration seed run has not yet been evidenced**.
 
+## Verified catalogue application-service refactor
+
+- [API catalogue refactor 8425135](https://github.com/jsgh1/test-manager-library-3145555-api/commit/8425135c7e1101d845731620b3cd2cf84772419f) introduced three focused application services: `CreateBookService`, `UpdateBookService`, `WithdrawBookService`, backed by application-owned `BookCatalog` and a PostgreSQL adapter.
+- [Fake catalogue acceptance tests c62dce2](https://github.com/jsgh1/test-manager-library-3145555-api/commit/c62dce2ab5e13efde48796a3c1510d1cf91c8225) verify copy availability and trim on creation, duplicate ISBN rejection, stock-safe total adjustments, and refusal to withdraw a book with open loans.
+- **PHP and live PostgreSQL CI jobs both passed**: [API workflow 38590795028](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38590795028).
+- Reading/listing, membership and cover orchestration are still implemented in the controller and remain pending for **full** hexagonal architecture acceptance.
+
 ## Published but NOT yet acceptance-verified
 
-- Complete hexagonal separation (T-08/T-19): lending, returns, authentication and historical reporting now use application services and tested ports/adapters, but book and member management and listing still retain persistence orchestration inside the HTTP controller.
+- Complete hexagonal separation (T-08/T-19): lending, returns, authentication, historical reporting and book create/update/withdraw now use application services and tested ports/adapters. Book searching/detail, cover operations, member management and loan/overdue listings still retain infrastructure orchestration in the HTTP controller.
 - File upload content/size/binary lifecycle, soft deletion with active loan conflict, every error code and complete authorization matrix.
 - Full UI acceptance beyond the successful book/member/loan/return happy path: negative cases, authorization by role, pagination, cover upload, report, overdue screen and responsive checks (T-22).
 - Public page responsive/browser checks (T-23); the source is intentionally self-contained.
