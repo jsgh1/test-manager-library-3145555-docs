@@ -52,9 +52,17 @@
 
 These results verify individual negative acceptance paths, not the complete response schema or all authorization, input validation and concurrency scenarios.
 
+## Verified application-layer separation (partial architectural remediation)
+
+- **API refactor:** [commit 048b850](https://github.com/jsgh1/test-manager-library-3145555-api/commit/048b8503562e06060cda9ef9dee48b594333151f) moved transactional lending and item returns into `LendBooksService` / `ReturnItemService` using application-owned `LendingPort`, `Clock`, and `IdGenerator` interfaces.
+- PostgreSQL persistence, system time and UUID generation now live behind adapters wired by `AppServiceProvider` (the composition root); the HTTP controller delegates checkout/return orchestration.
+- **Tests:** [commit dd5e946](https://github.com/jsgh1/test-manager-library-3145555-api/commit/dd5e9468346fb017b7b09435bfea194682d93a3d) added isolated fake-port tests for duplicate books, maximum checked-out books, overdue prohibition, atomic rollback, snapshot dates, and repeat returns, plus dependency-boundary checks.
+- **Evidence:** [API CI run 38588634252](https://github.com/jsgh1/test-manager-library-3145555-api/actions/runs/38588634252) completed successfully in both PHP and PostgreSQL integration jobs, including checkout/return, historical snapshot and simultaneous last-copy loan protection.
+- **Honest limitation:** authentication, catalogue, membership, overdue listing and report still have application logic within the Laravel HTTP controller. Therefore the system is **not yet a fully hexagonal implementation** and T-07/T-08/T-11/T-19 cannot be marked completely satisfied solely by this partial remediation.
+
 ## Published but NOT yet acceptance-verified
 
-- Full architecture/ports/adapters independence (T-07…T-11, T-19): the current Laravel controller retains orchestration and persistence responsibilities. Formal hexagonal composition and application fake tests remain missing.
+- Complete hexagonal separation (T-07/T-08/T-11/T-19): lending and returning now have tested ports/adapters, but authentication, books, membership, listing and reporting still need application service extraction and fuller architecture checks.
 - File upload content/size/binary lifecycle, soft deletion with active loan conflict, every error code and complete authorization matrix.
 - Full UI acceptance beyond the successful book/member/loan/return happy path: negative cases, authorization by role, pagination, cover upload, report, overdue screen and responsive checks (T-22).
 - Public page responsive/browser checks (T-23); the source is intentionally self-contained.
