@@ -14,11 +14,20 @@
 | Concurrent last-copy loans result in exactly one 201 and one 409 | Same API integration workflow | PASS |
 | React/Vite production build | [React workflow run 38572062037](https://github.com/jsgh1/test-manager-library-3145555-app/actions/runs/38572062037) | PASS |
 
+## Local Docker deployment evidence (learner-provided)
+
+- **October 14, 2026, approximately 09:54 America/Bogota:** The learner executed the PowerShell setup from `C:\\Users\\Aprendiz\\Desktop\\ManagerLibrary` and supplied the resulting terminal log.
+- `docker compose up --build -d` successfully built `manager-library-api` and `manager-library-app`, pulled `postgres:16-alpine`, created the network and persistent volumes, and started all three services.
+- `docker compose ps` reported `manager-library-db-1` **healthy**, `manager-library-api-1` **up**, and `manager-library-app-1` **up**.
+- Health check `GET http://localhost:8000/health` returned `{"status":"ok"}`.
+- The learner independently opened `http://localhost:5173/`, logged in successfully, and reached the dashboard.
+- **Conclusion:** T-20's one-command Docker bootstrap and the entry-level T-17 admin login were verified in the learner's local environment. This does **not** yet certify all end-to-end user-story acceptance criteria.
+- **Non-blocking warning:** Composer reported a PSR-4 autoload mismatch for `tests/DomainTest.php`; review separately.
+
 ## Published but NOT yet acceptance-verified
 
 - Full architecture/ports/adapters independence (T-07…T-11, T-19): the current Laravel controller retains orchestration and persistence responsibilities. Formal hexagonal composition and application fake tests remain missing.
 - File upload content/size/binary lifecycle, soft deletion with active loan conflict, every error code and complete authorization matrix.
-- Full Docker Compose one-command deployment (T-20) on a real Docker host; the component CI runs do not prove the Compose images start together.
 - Full operator UI manual journey, responsive checks and populated loan picker beyond the build test (T-22).
 - Public page responsive/browser checks (T-23); the source is intentionally self-contained.
 - Tool execution against a live populated API (T-21). The documented three-overdue-item requirement remains impossible with the specified clock API.
