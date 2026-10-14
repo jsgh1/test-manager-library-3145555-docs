@@ -125,12 +125,20 @@ These results verify individual negative acceptance paths, not the complete resp
 
 The totals reconcile exactly with the earlier screenshots and API-only seed output. This verifies rendering of the report with live demo data; it is **not proof** of the 5,000-book performance target, every historical rename/category edge case, or the three overdue demo loans still required by T-21.
 
+## Public page browser availability (learner confirmation)
+
+**October 14, 2026, approximately 10:50 America/Bogota.** The learner confirmed that opening the local `test-manager-library-3145555-page/index.html` file launches and displays the public presentation in a browser.
+
+- **PASS (manual):** The public page opens directly as a static HTML document.
+- **Previously PASS (CI):** The page includes responsive styles and does not reference the API; see [page CI run 38589644644](https://github.com/jsgh1/test-manager-library-3145555-page/actions/runs/38589644644).
+- **NOT YET CONFIRMED (manual):** Responsive appearance at mobile width, keyboard navigation and offline font fallback. Opening the page alone does not verify those.
+ 
 ## Published but NOT yet acceptance-verified
 
 - Complete hexagonal separation (T-08/T-19): lending, returns, authentication, historical reporting and book create/update/withdraw now use application services and tested ports/adapters. Book searching/detail, cover operations, member management and loan/overdue listings still retain infrastructure orchestration in the HTTP controller.
 - File upload content/size/binary lifecycle, soft deletion with active loan conflict, every error code and complete authorization matrix.
 - Full UI acceptance beyond the confirmed admin book/member/checkout/return and librarian creation/login/search/member/checkout paths: pagination, cover upload, report, overdue screen, role-specific HTTP cases and responsive checks (T-22).
-- Public page responsive/browser checks (T-23); the source is intentionally self-contained.
+- T-23 manual page opening passed, but mobile layout, keyboard accessibility and offline presentation remain unverified.
 - T-21 remaining gap: three overdue demonstration items cannot be generated in the examination window under the specified server-clock HTTP contract; 40 books, 10 members and 15 loans were successfully seeded via the API.
 - Performance with 5,000 books (RNF-1), all edge and negative cases, and nonfunctional security review.
 
