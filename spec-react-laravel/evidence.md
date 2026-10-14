@@ -110,6 +110,21 @@ These results verify individual negative acceptance paths, not the complete resp
 
 **Limitations:** T-21 is **PARTIAL**, not fully accepted: the reference API issues current-time loans with a +14-day due date and offers no legitimate past-date fixture endpoint. Do not silently backdate loans or write direct SQL from the demo tool. A responsible documented clarification/waiver is needed to satisfy exactly three overdue demo fixtures. This is evidence of the learner's console output, not an independent database-count inspection.
 
+## Manual end-to-end dashboard and historical report verification
+
+**October 14, 2026, learner screenshots from authenticated administrator browser session.** This evidence follows the successful API-only tool execution and pre-existing manual test records.
+
+| Browser view | Observed result | Assessment |
+| --- | --- | --- |
+| Overview — Book titles | **41** active books (1 manual + 40 demo) | **PASS (browser)** |
+| Overview — Registered members | **12** members (2 manual + 10 demo) | **PASS (browser)** |
+| Overview — Recent loans | **18** loans (3 manual + 15 demo) | **PASS (browser)** |
+| Reports — from/to selection | Both dates **2026-10-14** | **PASS (browser)** |
+| Most-borrowed report | **16 grouped rows** visible: one existing title + 15 demo titles | **PASS (browser)** |
+| Report count / historical label | `Cien años de soledad` shows **3** borrowings and `Novela`; demo rows show one borrowing each and their recorded category names | **PASS (browser)** |
+
+The totals reconcile exactly with the earlier screenshots and API-only seed output. This verifies rendering of the report with live demo data; it is **not proof** of the 5,000-book performance target, every historical rename/category edge case, or the three overdue demo loans still required by T-21.
+
 ## Published but NOT yet acceptance-verified
 
 - Complete hexagonal separation (T-08/T-19): lending, returns, authentication, historical reporting and book create/update/withdraw now use application services and tested ports/adapters. Book searching/detail, cover operations, member management and loan/overdue listings still retain infrastructure orchestration in the HTTP controller.
